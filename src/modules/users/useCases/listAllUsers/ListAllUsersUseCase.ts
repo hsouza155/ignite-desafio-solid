@@ -10,15 +10,15 @@ class ListAllUsersUseCase {
 
   execute({ user_id }: IRequest): User[] {
     const user = this.usersRepository.findById(user_id);
-    console.log(user_id);
-    if (user) {
-      throw new Error("Usuario nao existe");
-    }
+    const users = this.usersRepository.list();
 
-    if (!user.admin) {
-      throw new Error("Usuario nao existe");
+    if (!user) {
+      throw new Error("Usuário não existe");
     }
-    return this.usersRepository.list();
+    if (!user.admin) {
+      throw new Error("Usuário não tem permissão");
+    }
+    return users;
   }
 }
 
